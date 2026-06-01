@@ -57,8 +57,8 @@ export default function App() {
         pagoData.referencia = form.referencia;
     }
 
-    await registrarPago(pagoData);
-    setPagos(await obtenerPagos());
+    const newId = await registrarPago(pagoData);
+    setPagos(prev => [{...pagoData, id: newId}, ...prev].sort((a,b)=> b.fecha.localeCompare(a.fecha)));
     setForm({ fecha: new Date().toISOString().split('T')[0], tipoPago: 'Nequi', monto: 0, referencia: '' });
     setFile(null);
   };
@@ -75,7 +75,7 @@ export default function App() {
     }
 
     await updatePago(editingPago.id, pagoData);
-    setPagos(await obtenerPagos());
+    setPagos(prev => prev.map(p => p.id === editingPago.id ? {...p, ...pagoData} : p).sort((a,b)=> b.fecha.localeCompare(a.fecha)));
     setEditingPago(null);
     setForm({ fecha: new Date().toISOString().split('T')[0], tipoPago: 'Nequi', monto: 0, referencia: '' });
   };
@@ -150,7 +150,7 @@ export default function App() {
                                     referencia: p.referencia || '' 
                                 });
                             }} className="text-zinc-400 hover:text-white">Editar</button>
-                            <button onClick={async () => {{ await deletePago(p.id); setPagos(await obtenerPagos()); }}} className="text-red-500">Eliminar</button> 
+                            <button onClick={async () => {{ await deletePago(p.id); setPagos(prev => prev.filter(item => item.id !== p.id)); }}} className="text-red-500">Eliminar</button> 
                           </div>
                       )}
                     </div>
