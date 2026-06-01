@@ -1,0 +1,6 @@
+{
+  "name": "Car Loan Tracker",
+  "description": "Seguimiento de pagos para el crédito del carro con cuotas progresivas basadas en calendario y reglas de negocio.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
